@@ -11,23 +11,14 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 
 
-const { Title } = Typography;
-const Task=()=>{
+function Task() {
+  const { Title } = Typography;
+
   const [newtodo, setTodo] = useState("");
   const [todo, addTodo] = useState([]);
-  const [cible, setcible] = useState("");
-
-
   const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
- const handleShow = (e) => {
-   setShow(true);
-   setcible(e.target.value);
-   console.log(todo[cible])
-  };
-
-  const handleChange = (e) => {
+  const [cible, setcible] = useState("");
+  const changeTask = (e) => {
     setTodo(e.target.value);
   };
   const add = () => {
@@ -37,24 +28,28 @@ const Task=()=>{
         : alert("please write a todo")
       : addTodo([newtodo]);
     setTodo("");
-  
   };
   const deletetodo = (e) => {
     todo.splice(e.target.name, 1);
     addTodo([...todo]);
   };
-  const change = (e) => {
+  const valueUpdate = (e) => {
     setTodo(e.target.value);
   };
-  const addChange = () => {
-    console.log(todo[cible])  
-    console.log(newtodo)
+  const updateTask = () => {
     newtodo ? (todo[cible] = newtodo) : alert("please write a todo");
     addTodo([...todo]);
     setTodo("");
     handleClose();
   };
-  
+
+  const handleClose = () => setShow(false);
+  const handleShow = (e) => {
+    setShow(true);
+    setcible(e.target.name);
+  };
+
+
   return (
     <React.Fragment>
        <Title data-testid="todo" level={4}>
@@ -65,33 +60,36 @@ const Task=()=>{
             variant="outlined"
             size="small"
             placeholder="Add task"
-            onChange={handleChange}
+            onChange={changeTask}
             value={newtodo}
             />
-            <Button variant="contained" margin="normal" color="secondary" onClick={add}>ADD</Button>
+            &nbsp;&nbsp;
+            <Button variant="contained" margin="normal" color="secondary" 
+            style={{backgroundColor:'blue'}} onClick={add}>ADD</Button>
             <List>
               {todo.map((item, i)=>{
                 return(
                     <>
-                    <ListItem key={i + 100}>
-                      <ListItemText primary={item} />
-                    </ListItem>
-                    <Button
-                      key={i + 10000}
+                    <ListItem key={i}>
+                      <ListItemText primary={item} style={{marginLeft:800}} />
+                      
+                      <Button
                       variant="primary"
                       name={i}
                       onClick={handleShow}
+                      style={{marginRight:10}}
                     >
                       <UpdateIcon/>
                     </Button>
                     <Button 
-                      key={i + 1000000}
                       variant="secondary"
                       name={i}
                       onClick={deletetodo}
+                      style={{marginRight:800}}
                     >
                       <DeleteIcon />
                     </Button >
+                    </ListItem>
                     </>
                 )})}
             </List>
@@ -101,9 +99,9 @@ const Task=()=>{
           </Modal.Header>
           <Modal.Body>
             <TextField
-            variant="outlined"
-            size="small"
-              onChange={change}
+              variant="outlined"
+              size="small"
+              onChange={valueUpdate}
               placeholder={todo[cible]}
             />
           </Modal.Body>
@@ -111,14 +109,13 @@ const Task=()=>{
             <Button variant="secondary" onClick={handleClose}>
               Close
             </Button>
-            <Button variant="primary" onClick={addChange}>
+            <Button variant="primary" onClick={updateTask}>
               Edit Todo
             </Button>
           </Modal.Footer>
         </Modal>
      </React.Fragment>
-     
-    );    
+  );
 }
 
 export default Task;
