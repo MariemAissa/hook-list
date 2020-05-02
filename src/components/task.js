@@ -13,7 +13,6 @@ import Button from "react-bootstrap/Button";
 
 function Task() {
   const { Title } = Typography;
-
   const [newtodo, setTodo] = useState("");
   const [todo, addTodo] = useState([]);
   const [show, setShow] = useState(false);
@@ -22,12 +21,8 @@ function Task() {
     setTodo(e.target.value);
   };
   const add = () => {
-    todo
-      ? newtodo
-        ? addTodo([...todo, newtodo])
-        : alert("please write a todo")
-      : addTodo([newtodo]);
-    setTodo("");
+    todo.push(newtodo)
+    addTodo([...todo]);
   };
   const deletetodo = (e) => {
     todo.splice(e.target.name, 1);
@@ -37,7 +32,7 @@ function Task() {
     setTodo(e.target.value);
   };
   const updateTask = () => {
-    newtodo ? (todo[cible] = newtodo) : alert("please write a todo");
+    newtodo ? (todo[cible] = newtodo) : alert("Write your task");
     addTodo([...todo]);
     setTodo("");
     handleClose();
@@ -72,7 +67,6 @@ function Task() {
                     <>
                     <ListItem key={i}>
                       <ListItemText primary={item} style={{marginLeft:800}} />
-                      
                       <Button
                       variant="primary"
                       name={i}
